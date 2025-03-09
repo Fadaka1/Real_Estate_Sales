@@ -1,4 +1,4 @@
-# Real_Estate_Sales
+# Real_Estate_Sales.
 
 ![](Real_Estate_Images.jpg)
 
@@ -106,6 +106,40 @@ This design is crafted to support efficient analytical queries, ensuring data in
    - Fields: Avg_Sale_Price, Median_Sale_Price, Sale_Month, Season, Total_Sales, Total_Sales_Amount.
   
    **Property_By_Assessment**
+   - Assessment dimension for valuation analysis.
+   - Fields: Assessed_Value, Location, Residential_Type, Sale_Amount, Sale_Comparison, Sale_Month, 
+            Sale_To_Assessed_Ratio, Serial_Number, Town.
+
+3. **Important Features Of The Data Model**:
+   - Multi-level aggregation(property,town,and overall market).
+   - Time-series analysis(month,season,year).
+   - Geographical performance comparison.
+   - Assessment-to-sales ratio analysis.
+
+4. **Technical Implementation**:
+   - One-to-many relationships between dimension and fact tables.
+   - Calculated measures for derived metrics.
+   - Shared dimension across multiple fact tables.
+   - Hierarchical structure to enable drill-down analysis.
+  
+5. **Tools Used**:
+   - Power BI.
+   - SQL.
+  
+## Visualization.
+This interactive real estate sales dashboard provides a multi-faceted analysis of property transactions across multiple Connecticut towns. The dashboard displays aggregate metrics and detailed breakdowns of sales data with a total market value of $1.38 billion, providing insights into geographic trends, temporal patterns, and property type variations.
+
+
+
+
+
+  
+
+     
+         
+     
+  
+   
 
       
      
