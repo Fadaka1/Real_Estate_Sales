@@ -129,6 +129,68 @@ This design is crafted to support efficient analytical queries, ensuring data in
 ## Visualization.
 This interactive real estate sales dashboard provides a multi-faceted analysis of property transactions across multiple Connecticut towns. The dashboard displays aggregate metrics and detailed breakdowns of sales data with a total market value of $1.38 billion, providing insights into geographic trends, temporal patterns, and property type variations.
 
+![](Real_Estate_Dashboard..PNG)
+
+You can interact with the dataset with this link (<iframe title="Real_Estate_Sales." width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiYjJlMDA3ZGEtOWNkMy00NDgyLWI5ODQtODk0MGQ3NmQxMTk4IiwidCI6ImM0MDM2NzBlLWE0YjEtNDkzNy1hMWU2LWIwOWRlNTk3ZDYzMiJ9" frameborder="0" allowFullScreen="true"></iframe>)
+
+
+1. **Key Components and Insights**
+
+A. **Filter Controls**
+- Residential Type: Selectors for Condo, Single Family, Three Family, and Two Family properties.
+- Sale Year: Range slider spanning from 2000 to 2023 with current selection showing data between 2021-2023.
+- Season: Toggles for Fall, Winter, Spring, and Summer sales periods.
+
+B. **Key Performance Indicators**
+- Total Sales Amount: $1.38 billion in aggregate property sales.
+- Total Property Sale: $9.19 million (likely represents a specific segment or time period).
+- Average Sale by Town: $574,000 per town.
+- Average Sale Price: $344,780 per property.
+
+C. **Geographical Analysis**
+  **Sale Amount, Assessed Value and Sale to Assessed Ratio by Town**.
+- Horizontal bar chart comparing actual sales versus assessed values across towns.
+- **Key Finding**: Danbury shows highest property values, with significant gaps between sale amounts and assessments.
+- **Notable Pattern**: Most properties sell above their assessed values across all markets.
+
+D. **Sales Amount By Town**
+- Pie chart breaking down total sales volume by location.
+- **Key Markets**:
+  - $127.19M (33.45%) - largest segment (likely Danbury).
+  - $35.55M (17.65%) - second largest segment.
+  - $22.64M (11.24%) - third largest segment.
+  - Several smaller markets making up the remainder.
+ 
+E. **Temporal Analysis**
+   **Average Price, Total Sales and Median Sale Price by Sale Year**.
+- Stacked bar chart showing trends from 2000-2023.
+- **Key Trends**.
+   - Significant market growth between 2000-2023.
+   - Notable dip around 2010-2012 (likely reflecting housing crisis).
+   - Strong recovery and growth in recent years.
+   - Highest market activity in 2020-2023 period.
+    
+F. **Total Sales Amount and Median Sale Price by Sale Month**.
+- Line chart tracking seasonal patterns.
+- **Key Pattern**: Pronounced seasonality with peaks typically occurring in early summer.
+- **Price Range**: Monthly median prices fluctuate between approximately $210K-$290K.
+
+E. **Statistical Analysis**
+   **Average Sale Amount, Median Sale Amount, 25th & 75th Percentiles by Sale Year**.
+   - Area chart showing price distribution over time.
+   - **Key Insight**: Growing dispersion between low and high-end properties (widening gap between 25th and 75th percentiles).
+   - **Price Range**: Values ranging from approximately $0.2M to $1.4M.
+   - **Trend**: Consistent upward trend since 2015.
+
+
+
+ 
+  
+ 
+  
+
+
+
 
 
 
