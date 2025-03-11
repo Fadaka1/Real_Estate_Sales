@@ -83,29 +83,29 @@ This design is crafted to support efficient analytical queries, ensuring data in
    
    A. **Fact Tables**
    
-   **Sales_Trend_Year**
+   **Sales_Trend_Year**:
    - Primary metrics for year-based analysis.
    - Fields: Avg_Sale_Amount, Median_Sale_Amount, Total_Sales
 
-   **Median_Average_Sale**
+   **Median_Average_Sale**:
    - Statistical distribution data for sales analysis.
    - Fields: Avg_Sale_Amount, Sale_Amount_25th_Percentile, Sale_Amount_75th_Percentile, Dynamic_Sales_Volume.
   
-   **Yearly_Total_Sales**
+   **Yearly_Total_Sales**:
    - Annual aggregation of sales performance.
    - Fields: Avg_Sale_Price, Median_Sale_Price, Sale_Year, Total_Sales, Total_Sales_Amount.
   
    B. **Dimension Tables**
 
-   **Top_25_Towns**
+   **Top_25_Towns**:
    - Geographic dimension for town-level analysis.
    - Fields: Assessed_Value, Latitude, Longitude, Residential_Type, Sale_Amount, Sale_Month, Serial_Number.
 
-   **Sales_By_Month_Season**
+   **Sales_By_Month_Season**:
    - Temporal dimension for seasonal analysis.
    - Fields: Avg_Sale_Price, Median_Sale_Price, Sale_Month, Season, Total_Sales, Total_Sales_Amount.
   
-   **Property_By_Assessment**
+   **Property_By_Assessment**:
    - Assessment dimension for valuation analysis.
    - Fields: Assessed_Value, Location, Residential_Type, Sale_Amount, Sale_Comparison, Sale_Month, 
             Sale_To_Assessed_Ratio, Serial_Number, Town.
@@ -136,51 +136,77 @@ You can interact with the dataset with this link (<iframe title="Real_Estate_Sal
 
 1. **Key Components and Insights**
 
-A. **Filter Controls**
-- Residential Type: Selectors for Condo, Single Family, Three Family, and Two Family properties.
-- Sale Year: Range slider spanning from 2000 to 2023 with current selection showing data between 2021-2023.
-- Season: Toggles for Fall, Winter, Spring, and Summer sales periods.
+   A. **Filter Controls**:
+   
+   - Residential Type: Selectors for Condo, Single Family, Three Family, and Two Family properties.
+   - Sale Year: Range slider spanning from 2000 to 2023 with current selection showing data between 2021-2023.
+   - Season: Toggles for Fall, Winter, Spring, and Summer sales periods.
 
-B. **Key Performance Indicators**
-- Total Sales Amount: $1.38 billion in aggregate property sales.
-- Total Property Sale: $9.19 million (likely represents a specific segment or time period).
-- Average Sale by Town: $574,000 per town.
-- Average Sale Price: $344,780 per property.
+   B. **Key Performance Indicators**:
+   
+   - Total Sales Amount: $1.38 billion in aggregate property sales.
+   - Total Property Sale: $9.19 million (likely represents a specific segment or time period).
+   - Average Sale by Town: $574,000 per town.
+   - Average Sale Price: $344,780 per property.
 
-C. **Geographical Analysis**
-  **Sale Amount, Assessed Value and Sale to Assessed Ratio by Town**.
-- Horizontal bar chart comparing actual sales versus assessed values across towns.
-- **Key Finding**: Danbury shows highest property values, with significant gaps between sale amounts and assessments.
-- **Notable Pattern**: Most properties sell above their assessed values across all markets.
+   C. **Geographical Analysis**:
+   
+      **Sale Amount, Assessed Value and Sale to Assessed Ratio by Town**.
+   - Horizontal bar chart comparing actual sales versus assessed values across towns.
+   - **Key Finding**: Danbury shows highest property values, with significant gaps between sale amounts and 
+     assessments.
+   - **Notable Pattern**: Most properties sell above their assessed values across all markets.
 
-D. **Sales Amount By Town**
-- Pie chart breaking down total sales volume by location.
-- **Key Markets**:
-  - $127.19M (33.45%) - largest segment (likely Danbury).
-  - $35.55M (17.65%) - second largest segment.
-  - $22.64M (11.24%) - third largest segment.
-  - Several smaller markets making up the remainder.
+   D. **Sales Amount By Town**:
+   
+   - Pie chart breaking down total sales volume by location.
+   - **Key Markets**:
+   - $127.19M (33.45%) - largest segment (likely Danbury).
+   - $35.55M (17.65%) - second largest segment.
+   - $22.64M (11.24%) - third largest segment.
+   - Several smaller markets making up the remainder.
  
-E. **Temporal Analysis**
-   **Average Price, Total Sales and Median Sale Price by Sale Year**.
-- Stacked bar chart showing trends from 2000-2023.
-- **Key Trends**.
+   E. **Temporal Analysis**
+   
+      **Average Price, Total Sales and Median Sale Price by Sale Year**:
+   - Stacked bar chart showing trends from 2000-2023.
+   - **Key Trends**:
    - Significant market growth between 2000-2023.
    - Notable dip around 2010-2012 (likely reflecting housing crisis).
    - Strong recovery and growth in recent years.
    - Highest market activity in 2020-2023 period.
     
-F. **Total Sales Amount and Median Sale Price by Sale Month**.
-- Line chart tracking seasonal patterns.
-- **Key Pattern**: Pronounced seasonality with peaks typically occurring in early summer.
-- **Price Range**: Monthly median prices fluctuate between approximately $210K-$290K.
+   F. **Total Sales Amount and Median Sale Price by Sale Month**:
+   
+   - Line chart tracking seasonal patterns.
+   - **Key Pattern**: Pronounced seasonality with peaks typically occurring in early summer.
+   - **Price Range**: Monthly median prices fluctuate between approximately $210K-$290K.
 
-E. **Statistical Analysis**
-   **Average Sale Amount, Median Sale Amount, 25th & 75th Percentiles by Sale Year**.
+   G. **Statistical Analysis**
+      **Average Sale Amount, Median Sale Amount, 25th & 75th Percentiles by Sale Year**:
+   
    - Area chart showing price distribution over time.
-   - **Key Insight**: Growing dispersion between low and high-end properties (widening gap between 25th and 75th percentiles).
+   - **Key Insight**: Growing dispersion between low and high-end properties (widening gap between 25th and 75th 
+     percentiles).
    - **Price Range**: Values ranging from approximately $0.2M to $1.4M.
    - **Trend**: Consistent upward trend since 2015.
+
+   H. **Median Sale Amount and Average Sale Amount by Sale Year**:
+   
+   - Line chart comparing median vs average prices over time.
+   - **Key Finding**: The gap between the median and average prices in certain years indicates the market was skewed 
+     by high-end luxury properties.
+     
+3. **Business Apllication**.
+   
+   This report enables critical stakegolders to:
+   - **Market Comparison**: Identifying strongest performing towns and property types.
+   - **Investment Targeting**: Highlighting areas with positive sale-to-assessment ratios.
+   - **Trend Identification**: Recognizing seasonal patterns and long-term market directions.
+   - **Risk Assessment**: Understanding price volatility across different segments.
+   - **Valuation Guidance**: Providing context for current property valuations against historical patterns.
+
+I recommend considering this report as a comprehensive resource for strategic decision-making in **real estate** market. Its ability to compare markets, identify investment opportunities, track trends, assess risks, and provide valuation context makes it an essential tool for optimizing portfolio performance and staying ahead in a competitive market. Stakeholders can integrate these insights into their planning processes to drive informed, data-driven decisions.
 
 
 
