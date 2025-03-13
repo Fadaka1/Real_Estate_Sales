@@ -1,0 +1,147 @@
+REAL ESTAE SALES DATASET SQL QUERIES.
+## SALES_TREND_YEAR.
+WITH SalesData AS (
+    SELECT 
+        YEAR(CAST([Date_Recorded] AS DATE)) AS Sale_Year, 
+        [Sale_Amount],
+        COUNT(*) OVER (PARTITION BY YEAR(CAST([Date_Recorded] AS DATE))) AS Total_Sales,
+        AVG([Sale_Amount]) OVER (PARTITION BY YEAR(CAST([Date_Recorded] AS DATE))) AS Avg_Sale_Amount,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY [Sale_Amount]) 
+            OVER (PARTITION BY YEAR(CAST([Date_Recorded] AS DATE))) AS Median_Sale_Amount
+    FROM Real_Estate_Sales_Dataset
+    WHERE [Date_Recorded] IS NOT NULL
+)
+SELECT DISTINCT Sale_Year, Total_Sales, Avg_Sale_Amount, Median_Sale_Amount
+FROM SalesData
+ORDER BY Sale_Year;
+
+## Median vs. Average Sale Prices Over Time##
+
+WITH SalesData AS (
+    SELECT 
+        YEAR(CAST([Date_Recorded] AS DATE)) AS Sale_Year, 
+        [Sale_Amount]
+    FROM Real_Estate_Sales_Dataset
+    WHERE [Date_Recorded] IS NOT NULL
+)
+SELECT DISTINCT
+    Sale_Year,
+    COUNT(*) OVER (PARTITION BY Sale_Year) AS Total_Sales,
+    AVG([Sale_Amount]) OVER (PARTITION BY Sale_Year) AS Avg_Sale_Amount,
+    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY [Sale_Amount]) 
+        OVER (PARTITION BY Sale_Year) AS Median_Sale_Amount,
+    PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY [Sale_Amount]) 
+        OVER (PARTITION BY Sale_Year) AS Sale_Amount_25th_Percentile,
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY [Sale_Amount]) 
+        OVER (PARTITION BY Sale_Year) AS Sale_Amount_75th_Percentile
+FROM SalesData
+
+## TOP_25_TOWNS
+
+WITH RankedTowns AS (
+    -- Rank towns based on total sales amount in descending order
+    SELECT 
+        [Town],
+        SUM([Sale_Amount]) AS Total_Sales_Amount,
+        RANK() OVER (ORDER BY SUM([Sale_Amount]) DESC) AS Town_Rank
+    FROM Real_Estate_Sales_Dataset
+    WHERE [Town] IS NOT NULL
+    GROUP BY [Town]
+)
+SELECT 
+    r.[Serial_Number],  -- Original Serial Number
+    r.[Town], 
+    FORMAT(CAST(r.[Date_Recorded] AS DATE), 'MMMM') AS Sale_Month, -- Converts date to full month name
+    r.[Residential_Type], 
+    r.[Location], 
+    r.[Assessed_Value],
+    r.[Sale_Amount]  -- Include Sales Amount for that record
+FROM Real_Estate_Sales_Dataset r
+JOIN RankedTowns rt ON r.[Town] = rt.[Town]
+WHERE rt.Town_Rank <= 25  -- Select only the top 25 unique towns
+AND r.[Serial_Number] = (  -- Ensure only one unique record per town
+    SELECT MIN(r2.[Serial_Number]) 
+    FROM Real_Estate_Sales_Dataset r2 
+    WHERE r2.[Town] = r.[Town]
+)
+ORDER BY rt.Total_Sales_Amount DESC;
+
+## Top_50_Properties##
+	
+WITH SalesRatioAnalysis AS (
+    SELECT 
+        [Serial_Number],
+        [Town], 
+        FORMAT(CAST([Date_Recorded] AS DATE), 'MMMM') AS Sale_Month, -- Converts date to full month name
+        [Residential_Type], 
+        [Location], 
+        [Assessed_Value], 
+        [Sale_Amount],
+        CAST([Sale_Amount] AS FLOAT) / NULLIF(CAST([Assessed_Value] AS FLOAT), 0) AS Sales_Ratio -- Avoid division by zero
+    FROM Real_Estate_Sales_Dataset
+)
+SELECT TOP 50 *,
+    CASE 
+        WHEN Sales_Ratio > 1.2 THEN 'Overpriced'
+        WHEN Sales_Ratio < 0.8 THEN 'Underpriced'
+        ELSE 'Fairly Priced'
+    END AS Price_Category
+FROM SalesRatioAnalysis
+ORDER BY Sale_Amount DESC;  -- Selects top 50 highest sales
+## PROPERTY_BY_ASSESSMENT##
+
+WITH MarketVsAssessed AS (
+    SELECT 
+        Serial_Number,
+        Town,
+        DATENAME(MONTH, CAST([Date_Recorded] AS DATE)) AS Sale_Month,  -- Convert to Month Name (January, February)
+        Residential_Type,
+        Location,
+        Sale_Amount,
+        Assessed_Value,
+        (Sale_Amount * 1.0 / NULLIF(Assessed_Value, 0)) AS Sale_to_Assessed_Ratio,
+        CASE 
+            WHEN Sale_Amount > Assessed_Value THEN 'Above Assessed Value'
+            WHEN Sale_Amount < Assessed_Value THEN 'Below Assessed Value'
+            ELSE 'At Assessed Value'
+        END AS Sale_Comparison
+    FROM Real_Estate_Sales_Dataset
+)
+SELECT TOP 25 *
+FROM MarketVsAssessed
+ORDER BY Sale_to_Assessed_Ratio DESC;  -- Get top 25 most overvalued properties
+## SALES BY MONTH/SEASON OF THE YEAR##
+
+WITH MonthlySales AS (
+    SELECT 
+        DATENAME(MONTH, CAST(Date_Recorded AS DATE)) AS Sale_Month,
+        CASE 
+            WHEN MONTH(CAST(Date_Recorded AS DATE)) IN (12, 1, 2) THEN 'Winter'
+            WHEN MONTH(CAST(Date_Recorded AS DATE)) IN (3, 4, 5) THEN 'Spring'
+            WHEN MONTH(CAST(Date_Recorded AS DATE)) IN (6, 7, 8) THEN 'Summer'
+            WHEN MONTH(CAST(Date_Recorded AS DATE)) IN (9, 10, 11) THEN 'Fall'
+        END AS Season,
+        Sale_Amount,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY Sale_Amount) 
+            OVER (PARTITION BY DATENAME(MONTH, CAST(Date_Recorded AS DATE))) 
+        AS Median_Sale_Price
+    FROM Real_Estate_Sales_Dataset
+    WHERE Sale_Amount BETWEEN 50000 AND 5000000 -- Exclude extreme outliers
+)
+SELECT 
+    Sale_Month,
+    Season,
+    COUNT(Sale_Amount) AS Total_Sales,
+    SUM(Sale_Amount) AS Total_Sales_Amount,
+    AVG(Sale_Amount) AS Avg_Sale_Price,
+    MAX(Median_Sale_Price) AS Median_Sale_Price
+
+FROM MonthlySales
+GROUP BY Sale_Month, Season
+ORDER BY DATEPART(MONTH, CAST('2023-' + Sale_Month + '-01' AS DATE));  
+ORDER BY Sale_Year;
+
+Insights for Stakeholders
+🔹 Peak Season: If June, July, and August have the highest sales, it suggests summer is the best time to sell.
+🔹 Off-Season: If January and February have the lowest sales, this indicates a slow winter market.
+🔹 Price Trends: Compare median vs. average sale prices to see whether the market is stable or skewed by luxury sales.
